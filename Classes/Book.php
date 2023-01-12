@@ -9,20 +9,37 @@ class Book
 
     function __construct($id, $price, $stock, $title)
     {
-    $this->id = $id;
-    $this->price = $price;
-    $this->stock = $stock;
-    $this->title = $title;
+        $this->id = $id;
+        $this->price = $price;
+        $this->stock = $stock;
+        $this->title = $title;
     }
 
-    static function getJasonBooks($filePath){
+    static function getJasonBooks($filePath)
+    {
         $books = array();
         $json = json_decode(file_get_contents($filePath), true);
-        foreach ($json as $value){
-            $books[] = new Book($value["title"], $value["price"], $value["stock"], $value["title"]);
+        foreach ($json as $value) {
+            $books[] = new Book($value["id"], $value["price"], $value["stock"], $value["title"]);
         }
 
         return $books;
+    }
+
+    public function addStock($summ)
+    {
+        $this->stock += $summ;
+        if ($this->stock < 0) {
+            $this->stock = 0;
+        }
+    }
+
+    public function removeStock($summ)
+    {
+        $this->stock = $this->stock - $summ;
+        if ($this->stock < 0) {
+            $this->stock = 0;
+        }
     }
 
     /**
@@ -36,10 +53,6 @@ class Book
     /**
      * @param mixed $id
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed
@@ -88,7 +101,6 @@ class Book
     {
         $this->stock = $stock;
     }
-
 
 
 }
